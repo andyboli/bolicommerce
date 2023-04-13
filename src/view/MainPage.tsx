@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { CategoriesContainer } from "./containers";
+import { CategoriesContainer, SearchContainer } from "./containers";
 import { Categories } from "../entities";
 
 const MainPage: React.FC = () => {
@@ -13,6 +13,7 @@ const MainPage: React.FC = () => {
           categories={categories}
           setCategories={setCategories}
         />
+        <SearchContainer />
       </section>
     </main>
   );
