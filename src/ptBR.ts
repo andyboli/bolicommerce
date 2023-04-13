@@ -12,6 +12,8 @@ const ptBR: MessagesType = {
   "categoriesContainer.productsDropdown.item.mobile": "Celular",
   "categoriesContainer.productsDropdown.item.refrigerator": "Geladeira",
   "categoriesContainer.productsDropdown.item.tv": "TV",
+  "searchComponent.searchInput.enterButton": "Pesquisar",
+  "searchContainer.searchInput.placeholder": "Buscar produtos",
 };
 
 export default ptBR;
