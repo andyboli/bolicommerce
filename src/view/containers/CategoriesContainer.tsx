@@ -1,34 +1,30 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { MenuProps } from "antd";
+import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import { MenuProps, Row } from "antd";
 
 import { DropdownComponent } from "../components";
-import {
-  Categories,
-  PRODUCTS_CATEGORIES,
-  WEB_CATEGORIES,
-} from "../../entities";
+import { PRODUCTS_CATEGORIES, DOMAIN_CATEGORIES } from "../../entities";
 
-interface CategoriesContainerProps {
-  categories: Categories;
-  setCategories: React.Dispatch<React.SetStateAction<Categories>>;
-}
-
-const CategoriesContainer: React.FC<CategoriesContainerProps> = ({
-  categories: { productCategory, webCategory },
-  setCategories,
-}) => {
+const CategoriesContainer: React.FC = () => {
   const intl = useIntl();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const mapWebCategoriesToLabel: Record<WEB_CATEGORIES, string> = {
-    [WEB_CATEGORIES.BUSCAPE]: intl.formatMessage({
-      id: "categoriesContainer.webDropdown.item.buscape",
+  const category = (searchParams.get("category") || "") as
+    | PRODUCTS_CATEGORIES
+    | "";
+  const domain = (searchParams.get("domain") || "") as DOMAIN_CATEGORIES | "";
+
+  const mapDomainCategoriesToLabel: Record<DOMAIN_CATEGORIES, string> = {
+    [DOMAIN_CATEGORIES.BUSCAPE]: intl.formatMessage({
+      id: "categoriesContainer.domainDropdown.item.buscape",
     }),
-    [WEB_CATEGORIES.FREEE_MARKET]: intl.formatMessage({
-      id: "categoriesContainer.webDropdown.item.freeMarket",
+    [DOMAIN_CATEGORIES.FREEEMARKET]: intl.formatMessage({
+      id: "categoriesContainer.domainDropdown.item.freeMarket",
     }),
-    [WEB_CATEGORIES.ALL]: intl.formatMessage({
-      id: "categoriesContainer.webDropdown.item.all",
+    [DOMAIN_CATEGORIES.ALL]: intl.formatMessage({
+      id: "categoriesContainer.domainDropdown.item.all",
     }),
   };
 
@@ -44,18 +40,18 @@ const CategoriesContainer: React.FC<CategoriesContainerProps> = ({
     }),
   };
 
-  const webCategories: MenuProps["items"] = [
+  const domainCategories: MenuProps["items"] = [
     {
-      label: mapWebCategoriesToLabel[WEB_CATEGORIES.ALL],
-      key: WEB_CATEGORIES.ALL,
+      label: mapDomainCategoriesToLabel[DOMAIN_CATEGORIES.ALL],
+      key: DOMAIN_CATEGORIES.ALL,
     },
     {
-      label: mapWebCategoriesToLabel[WEB_CATEGORIES.BUSCAPE],
-      key: WEB_CATEGORIES.BUSCAPE,
+      label: mapDomainCategoriesToLabel[DOMAIN_CATEGORIES.BUSCAPE],
+      key: DOMAIN_CATEGORIES.BUSCAPE,
     },
     {
-      label: mapWebCategoriesToLabel[WEB_CATEGORIES.FREEE_MARKET],
-      key: WEB_CATEGORIES.FREEE_MARKET,
+      label: mapDomainCategoriesToLabel[DOMAIN_CATEGORIES.FREEEMARKET],
+      key: DOMAIN_CATEGORIES.FREEEMARKET,
     },
   ];
 
@@ -74,42 +70,52 @@ const CategoriesContainer: React.FC<CategoriesContainerProps> = ({
     },
   ];
 
-  const webMenu: MenuProps = {
-    items: webCategories,
-    onClick: ({ key }) =>
-      setCategories((categories) => ({
-        ...categories,
-        webCategory: key as WEB_CATEGORIES,
-      })),
+  const domainMenu: MenuProps = {
+    items: domainCategories,
+    onClick: ({ key: filterValue }) =>
+      setSearchParams({
+        domain: filterValue,
+        category,
+      }),
   };
 
   const productsMenu: MenuProps = {
     items: productsCategories,
-    onClick: ({ key }) =>
-      setCategories((categories) => ({
-        ...categories,
-        productCategory: key as PRODUCTS_CATEGORIES,
-      })),
+    onClick: ({ key: filterValue }) =>
+      setSearchParams({
+        domain,
+        category: filterValue,
+      }),
   };
 
-  const webLabel = webCategory
-    ? mapWebCategoriesToLabel[webCategory]
+  const domainLabel = domain
+    ? mapDomainCategoriesToLabel[domain]
     : intl.formatMessage({
-        id: "categoriesContainer.webDropdown.defaultLabel.webCategories",
+        id: "categoriesContainer.domainDropdown.defaultLabel.domainCategories",
       });
 
-  const productLabel = productCategory
-    ? mapProductCategoriesToLabel[productCategory]
+  const productLabel = category
+    ? mapProductCategoriesToLabel[category]
     : intl.formatMessage({
         id: "categoriesContainer.productsDropdown.defaultLabel.productsCategories",
       });
 
   return (
-    <div>
-      <DropdownComponent label={webLabel} menu={webMenu} />
+    <CategoriesWrapper>
+      <DropdownComponent label={domainLabel} menu={domainMenu} />
       <DropdownComponent label={productLabel} menu={productsMenu} />
-    </div>
+    </CategoriesWrapper>
   );
 };
+
+const CategoriesWrapper = styled(Row)`
+  width: 40%;
+  gap: 2%;
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
+    justify-content: center;
+  }
+`;
 
 export default CategoriesContainer;
