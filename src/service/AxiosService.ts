@@ -13,8 +13,7 @@ const postProducts = async (
     endpoint,
     {
       data: requestParams,
-    },
-    { headers: { "Access-Control-Allow-Origin": "*" } }
+    }
   );
 };
 
