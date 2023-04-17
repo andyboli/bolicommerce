@@ -24,7 +24,7 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   storedSearches,
 }) => {
   const intl = useIntl();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
 

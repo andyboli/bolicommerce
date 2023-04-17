@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import styled from "styled-components";
 import { Row, Typography } from "antd";
