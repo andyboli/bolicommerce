@@ -9,23 +9,17 @@ const postProducts = async (
   requestParams: PostProductsRequestParams
 ): Promise<{ data: PostProductsRequestResponse }> => {
   const endpoint = process.env.REACT_APP_POST_PRODUCTS_ENDPOINT as string;
-
-  return axios.post(endpoint, {
-    data: requestParams,
-  });
-};
-
-const deleteProducts = async (): Promise<{
-  data: PostProductsRequestResponse;
-}> => {
-  const endpoint = process.env.REACT_APP_POST_PRODUCTS_ENDPOINT as string;
-
-  return axios.delete(endpoint);
+  return axios.post(
+    endpoint,
+    {
+      data: requestParams,
+    },
+    { headers: { "Access-Control-Allow-Origin": "*" } }
+  );
 };
 
 const AxiosService = {
   postProducts,
-  deleteProducts,
 };
 
 export default AxiosService;
